@@ -1,0 +1,2 @@
+# BenceGLGDevMd
+Hungarian Markdown Editor
