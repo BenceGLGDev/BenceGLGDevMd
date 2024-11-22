@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magyar Markdown Szerkesztő</title>
+    <style>
+        /* Alap stílusok */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: #6200ea;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        #editor, #preview {
+            width: 48%;
+            height: 70vh;
+            margin: 10px 1%;
+            padding: 10px;
+            box-sizing: border-box;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            overflow-y: auto;
+        }
+        #container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        #editor {
+            resize: none;
+        }
+        #download-button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #download-button:hover {
+            background-color: #3700b3;
+        }
+        h1 {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Magyar Markdown Szerkesztő</h1>
+        <p>Írj markdown szöveget a bal oldalon, és az eredményt azonnal látni fogod a jobb oldalon.</p>
+    </header>
+    <div id="container">
+        <!-- Markdown szerkesztő -->
+        <textarea id="editor" placeholder="Írj ide a Markdown szöveget..."></textarea>
+        <!-- Előnézet -->
+        <div id="preview"></div>
+    </div>
+    <!-- Letöltés gomb -->
+    <button id="download-button">Markdown letöltése</button>
+    <script>
+        // HTML elemek hivatkozása
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+        const downloadButton = document.getElementById('download-button');
+
+        // Markdown szöveg HTML-é alakítása
+        function parseMarkdown(markdown) {
+            return markdown
+                .replace(/^# (.+)/gm, '<h1>$1</h1>')  // # Fejléc 1
+                .replace(/^## (.+)/gm, '<h2>$1</h2>') // ## Fejléc 2
+                .replace(/^### (.+)/gm, '<h3>$1</h3>') // ### Fejléc 3
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') // Félkövér **szöveg**
+                .replace(/\*(.+?)\*/g, '<em>$1</em>') // Dőlt *szöveg*
+                .replace(/`(.+?)`/g, '<code>$1</code>') // Kód `kódrészlet`
+                .replace(/^- (.+)/gm, '<li>$1</li>') // Lista - elem
+                .replace(/<li>(.+?)<\/li>/gm, '<ul><li>$1</li></ul>') // Csomagolás UL-be
+                .replace(/\n/g, '<br>'); // Újsor
+        }
+
+        // Élő előnézet frissítése
+        editor.addEventListener('input', () => {
+            const markdown = editor.value; // Szöveg beolvasása
+            preview.innerHTML = parseMarkdown(markdown); // Szöveg átalakítása és megjelenítése
+        });
+
+        // Markdown fájl letöltése
+        downloadButton.addEventListener('click', () => {
+            const markdownContent = editor.value; // Markdown tartalom
+            const blob = new Blob([markdownContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+
+            // Létrehoz egy ideiglenes linket a letöltéshez
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dokumentum.md';
+            a.click();
+
+            // URL felszabadítása
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
