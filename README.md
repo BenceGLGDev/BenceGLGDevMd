@@ -1,4 +1,4 @@
-# Magyar Markdown Szerkesztő [Weboldal Link]{"https://benceglgdev.github.io/BenceGLGDevMd.github.io"}
+# Magyar Markdown Szerkesztő [Weboldal Link]{https://benceglgdev.github.io/BenceGLGDevMd.github.io }
 
 Egy egyszerű, magyar nyelvű **Markdown szerkesztő**, amely lehetővé teszi, hogy Markdown formátumban írj szöveget, azonnal megtekintsd annak HTML előnézetét, és letöltsd a Markdown fájlt.
 
